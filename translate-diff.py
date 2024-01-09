@@ -116,6 +116,7 @@ def translate_diff(key, assets, verbose):
     print(os.listdir('..'))
     print(os.listdir('121-platform'))
     print(os.listdir('121-platform/interfaces/Portal/src/assets/i18n'))
+    print(glob.glob(f"{assets}/*.json"))
     
     if key is None or assets is None:
         from dotenv import load_dotenv
