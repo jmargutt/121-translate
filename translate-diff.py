@@ -133,7 +133,7 @@ def translate_diff(key, assets, verbose):
         print('found these languages:', languages)
     
     # compare the current english version with the last release
-    with open(f'en.json', 'r') as jsonFile:
+    with open(f"{assets}/en.json", 'r') as jsonFile:
         en_new = flatten_json(json.load(jsonFile))
     releases = requests.get("https://api.github.com/repos/global-121/121-platform/releases").json()
     releases_tags = [x['tag_name'] for x in releases]
@@ -146,7 +146,7 @@ def translate_diff(key, assets, verbose):
             print(f"checking translation en --> {language}")
         
         translations.clear()
-        with open(f'{language}.json', 'r') as jsonFile:
+        with open(f"{assets}/{language}.json", 'r') as jsonFile:
             ln_new = flatten_json(json.load(jsonFile))
         try:
             ln_old = flatten_json(requests.get(
