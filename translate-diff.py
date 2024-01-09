@@ -168,7 +168,7 @@ def translate_diff(key, assets, verbose):
             if verbose:
                 print(f'{language}.json has been updated')
             # save new translations to json
-            with open(f'{language}.json', 'w', encoding='utf-8') as jsonFile:
+            with open(f'{assets}/{language}.json', 'w', encoding='utf-8') as jsonFile:
                 json.dump(
                     ln_new,
                     jsonFile,
