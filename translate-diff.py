@@ -110,14 +110,6 @@ def translate_field(value: str, source: str, target: str, trans_headers: dict):
 def translate_diff(key, assets, verbose):
     """Translate 121 Portal."""
     
-    print('root')
-    print(os.listdir())
-    print('parent')
-    print(os.listdir('..'))
-    print(os.listdir('121-platform'))
-    print(os.listdir('121-platform/interfaces/Portal/src/assets/i18n'))
-    print(glob.glob(f"{assets}/*.json"))
-    
     if key is None or assets is None:
         from dotenv import load_dotenv
         load_dotenv()
@@ -135,7 +127,7 @@ def translate_diff(key, assets, verbose):
     # get list of available languages
     # repo = Github().get_repo("global-121/121-platform")
     # languages = [Path(x.path).stem for x in repo.get_contents("interfaces/Portal/src/assets/i18n")]
-    languages = [lang_file.replace('.json', '') for lang_file in glob.glob(f"{assets}/*.json")]
+    languages = [os.path.basename(lang_file.replace('.json', '')) for lang_file in glob.glob(f"{assets}/*.json")]
     languages.remove('en')
     if verbose:
         print('found these languages:', languages)
