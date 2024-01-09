@@ -139,7 +139,7 @@ def translate_diff(key, assets, verbose):
     releases_tags = [x['tag_name'] for x in releases]
     en_old = flatten_json(requests.get(
         f'https://raw.githubusercontent.com/global-121/121-platform/'
-        f'{releases_tags[0]}/interfaces/Portal/src/assets/i18n/en.json').json())
+        f'{releases_tags[0]}/{assets}/en.json').json())
     
     for language in languages:
         if verbose:
@@ -151,7 +151,7 @@ def translate_diff(key, assets, verbose):
         try:
             ln_old = flatten_json(requests.get(
                 f'https://raw.githubusercontent.com/global-121/121-platform/'
-                f'{releases_tags[0]}/interfaces/Portal/src/assets/i18n/{language}.json').json())
+                f'{releases_tags[0]}/{assets}/{language}.json').json())
         except requests.exceptions.JSONDecodeError:
             ln_old = {}
         
