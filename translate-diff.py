@@ -125,36 +125,34 @@ def translate_diff(key, assets, verbose):
     }
     
     # get list of available languages
-    # repo = Github().get_repo("global-121/121-platform")
-    # languages = [Path(x.path).stem for x in repo.get_contents("interfaces/Portal/src/assets/i18n")]
     languages = [os.path.basename(lang_file.replace('.json', '')) for lang_file in glob.glob(f"{assets}/*.json")]
     languages.remove('en')
     if verbose:
         print('found these languages:', languages)
-    
-    # compare the current english version with the last release
+
+    # compare the current en.json with the version from previous commit
     with open(f"{assets}/en.json", 'r') as jsonFile:
         en_new = flatten_json(json.load(jsonFile))
-    releases = requests.get("https://api.github.com/repos/global-121/121-platform/releases").json()
-    releases_tags = [x['tag_name'] for x in releases]
+    commits = requests.get(
+        f'https://api.github.com/repos/global-121/121-platform/commits?path={assets}/en.json&sha=master').json()
     en_old = flatten_json(requests.get(
         f'https://raw.githubusercontent.com/global-121/121-platform/'
-        f'{releases_tags[0]}/{assets}/en.json').json())
-    
+        f'{commits[1]["sha"]}/{assets}/en.json').json())
+
     for language in languages:
         if verbose:
             print(f"checking translation en --> {language}")
-        
+
         translations.clear()
         with open(f"{assets}/{language}.json", 'r') as jsonFile:
             ln_new = flatten_json(json.load(jsonFile))
         try:
             ln_old = flatten_json(requests.get(
                 f'https://raw.githubusercontent.com/global-121/121-platform/'
-                f'{releases_tags[0]}/{assets}/{language}.json').json())
+                f'{commits[1]["sha"]}/{assets}/{language}.json').json())
         except requests.exceptions.JSONDecodeError:
             ln_old = {}
-        
+
         for key, value in en_new.items():
             # if key is new, translate
             if key not in en_old.keys() or key not in ln_new.keys() or key not in ln_old.keys():
@@ -163,7 +161,7 @@ def translate_diff(key, assets, verbose):
             elif value != en_old[key] and ln_new[key] == ln_old[key]:
                 ln_new[key] = translate_field(value, "en", language, trans_headers)
         ln_new = nest_json(ln_new)
-        
+
         if ln_new != ln_old:
             if verbose:
                 print(f'{language}.json has been updated')
