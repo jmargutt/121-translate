@@ -110,6 +110,13 @@ def translate_field(value: str, source: str, target: str, trans_headers: dict):
 def translate_diff(key, assets, verbose):
     """Translate 121 Portal."""
     
+    print('root')
+    print(os.listdir())
+    print('parent')
+    print(os.listdir('..'))
+    print('assets')
+    print(os.listdir(assets))
+    
     if key is None or assets is None:
         from dotenv import load_dotenv
         load_dotenv()
