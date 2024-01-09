@@ -114,8 +114,8 @@ def translate_diff(key, assets, verbose):
     print(os.listdir())
     print('parent')
     print(os.listdir('..'))
-    print('assets')
-    print(os.listdir(assets))
+    print(os.listdir('121-platform'))
+    print(os.listdir('121-platform/interfaces/Portal/src/assets/i18n'))
     
     if key is None or assets is None:
         from dotenv import load_dotenv
